@@ -1,0 +1,5 @@
+*.egg-info
+*.pyc
+*/index.htm
+/.mypy_cache
+/venv
