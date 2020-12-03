@@ -6,16 +6,42 @@ from support import timing
 
 
 def compute(s: str) -> int:
-    for line in s.split():
-        pass
-    # TODO: implement solution here!
-    return 0
+    lines = s.splitlines()
+    x, y = 0, 0
+
+    count = 0
+    x += 3
+    x %= len(lines[0])
+    y += 1
+    while y < len(lines):
+        if lines[y][x] == '#':
+            count += 1
+        x += 3
+        x %= len(lines[0])
+        y += 1
+
+    return count
+
+
+INPUT = '''\
+..##.......
+#...#...#..
+.#....#..#.
+..#.#...#.#
+.#...##..#.
+..#.##.....
+.#.#.#....#
+.#........#
+#.##...#...
+#...##....#
+.#..#...#.#
+'''
 
 
 @pytest.mark.parametrize(
     ('input_s', 'expected'),
     (
-        # put given test cases here
+        (INPUT, 7),
     ),
 )
 def test(input_s: str, expected: int) -> None:
