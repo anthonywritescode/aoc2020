@@ -350,92 +350,20 @@ AS (
 INSERT INTO lines (ROWID, s)
 SELECT nn.ROWID, nn.s FROM nn;
 
-CREATE TABLE answer (i INT);
-INSERT INTO answer VALUES (1);
-
-WITH RECURSIVE
-    nn (x, y, accumulator)
-AS (
-    SELECT 1, 1, 0
-    UNION ALL
-    SELECT
-        (nn.x + 1) % (SELECT LENGTH(s) FROM lines LIMIT 1) ,
-        nn.y + 1,
-        nn.accumulator + (
-            SELECT SUBSTR(s, nn.x + 1, 1) = '#' FROM lines WHERE ROWID = nn.y
-        )
-    FROM nn
-    WHERE y < (SELECT COUNT(1) FROM lines)
-)
-INSERT INTO answer
-SELECT MAX(accumulator) * (SELECT MAX(i) FROM ANSWER) FROM nn;
-
-WITH RECURSIVE
-    nn (x, y, accumulator)
-AS (
-    SELECT 3, 1, 0
-    UNION ALL
-    SELECT
-        (nn.x + 3) % (SELECT LENGTH(s) FROM lines LIMIT 1) ,
-        nn.y + 1,
-        nn.accumulator + (
-            SELECT SUBSTR(s, nn.x + 1, 1) = '#' FROM lines WHERE ROWID = nn.y
-        )
-    FROM nn
-    WHERE y < (SELECT COUNT(1) FROM lines)
-)
-INSERT INTO answer
-SELECT MAX(accumulator) * (SELECT MAX(i) FROM ANSWER) FROM nn;
-
-WITH RECURSIVE
-    nn (x, y, accumulator)
-AS (
-    SELECT 5, 1, 0
-    UNION ALL
-    SELECT
-        (nn.x + 5) % (SELECT LENGTH(s) FROM lines LIMIT 1) ,
-        nn.y + 1,
-        nn.accumulator + (
-            SELECT SUBSTR(s, nn.x + 1, 1) = '#' FROM lines WHERE ROWID = nn.y
-        )
-    FROM nn
-    WHERE y < (SELECT COUNT(1) FROM lines)
-)
-INSERT INTO answer
-SELECT MAX(accumulator) * (SELECT MAX(i) FROM ANSWER) FROM nn;
-
-WITH RECURSIVE
-    nn (x, y, accumulator)
-AS (
-    SELECT 7, 1, 0
-    UNION ALL
-    SELECT
-        (nn.x + 7) % (SELECT LENGTH(s) FROM lines LIMIT 1) ,
-        nn.y + 1,
-        nn.accumulator + (
-            SELECT SUBSTR(s, nn.x + 1, 1) = '#' FROM lines WHERE ROWID = nn.y
-        )
-    FROM nn
-    WHERE y < (SELECT COUNT(1) FROM lines)
-)
-INSERT INTO answer
-SELECT MAX(accumulator) * (SELECT MAX(i) FROM ANSWER) FROM nn;
-
-WITH RECURSIVE
-    nn (x, y, accumulator)
-AS (
-    SELECT 1, 2, 0
-    UNION ALL
-    SELECT
-        (nn.x + 1) % (SELECT LENGTH(s) FROM lines LIMIT 1) ,
-        nn.y + 2,
-        nn.accumulator + (
-            SELECT SUBSTR(s, nn.x + 1, 1) = '#' FROM lines WHERE ROWID = nn.y
-        )
-    FROM nn
-    WHERE y < (SELECT COUNT(1) FROM lines)
-)
-INSERT INTO answer
-SELECT MAX(accumulator) * (SELECT MAX(i) FROM ANSWER) FROM nn;
-
-SELECT MAX(i) FROM answer;
+SELECT (
+    SELECT SUM(SUBSTR(s, ((ROWID * 1) % LENGTH(s)) + 1, 1) = '#')
+    FROM lines
+) * (
+    SELECT SUM(SUBSTR(s, ((ROWID * 3) % LENGTH(s)) + 1, 1) = '#')
+    FROM lines
+) * (
+    SELECT SUM(SUBSTR(s, ((ROWID * 5) % LENGTH(s)) + 1, 1) = '#')
+    FROM lines
+) * (
+    SELECT SUM(SUBSTR(s, ((ROWID * 7) % LENGTH(s)) + 1, 1) = '#')
+    FROM lines
+) * (
+    SELECT SUM(SUBSTR(s, ((ROWID / 2) % LENGTH(s)) + 1, 1) = '#')
+    FROM lines
+    WHERE ROWID % 2 = 0
+);

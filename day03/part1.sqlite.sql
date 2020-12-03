@@ -350,22 +350,5 @@ AS (
 INSERT INTO lines (ROWID, s)
 SELECT nn.ROWID, nn.s FROM nn;
 
-CREATE TABLE answer (i INT);
-WITH RECURSIVE
-    nn (x, y, accumulator)
-AS (
-    SELECT 3, 1, 0
-    UNION ALL
-    SELECT
-        (nn.x + 3) % (SELECT LENGTH(s) FROM lines LIMIT 1) ,
-        nn.y + 1,
-        nn.accumulator + (
-            SELECT SUBSTR(s, nn.x + 1, 1) = '#' FROM lines WHERE ROWID = nn.y
-        )
-    FROM nn
-    WHERE y < (SELECT COUNT(1) FROM lines)
-)
-INSERT INTO answer
-SELECT MAX(accumulator) FROM nn;
-
-SELECT * FROM answer;
+SELECT SUM(SUBSTR(s, ((ROWID * 3) % LENGTH(s)) + 1, 1) = '#')
+FROM lines;
