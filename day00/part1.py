@@ -1,8 +1,11 @@
 import argparse
+import os.path
 
 import pytest
 
 from support import timing
+
+INPUT_TXT = os.path.join(os.path.dirname(__file__), 'input.txt')
 
 
 def compute(s: str) -> int:
@@ -24,7 +27,7 @@ def test(input_s: str, expected: int) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument('data_file')
+    parser.add_argument('data_file', nargs='?', default=INPUT_TXT)
     args = parser.parse_args()
 
     with open(args.data_file) as f, timing():
