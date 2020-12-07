@@ -24,12 +24,12 @@ def compute(s: str) -> int:
             parents[color].append(k)
 
     total_colors = set()
-    parents_queue = parents['shiny gold']
-    while parents_queue:
-        color = parents_queue.pop()
+    todo = parents['shiny gold']
+    while todo:
+        color = todo.pop()
         if color not in total_colors:
             total_colors.add(color)
-            parents_queue.extend(parents[color])
+            todo.extend(parents[color])
 
     return len(total_colors)
 

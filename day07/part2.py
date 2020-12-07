@@ -22,12 +22,12 @@ def compute(s: str) -> int:
         colors[k] = targets
 
     total_bags = 0
-    queue = [(1, 'shiny gold')]
-    while queue:
-        n, color = queue.pop()
+    todo = [(1, 'shiny gold')]
+    while todo:
+        n, color = todo.pop()
         total_bags += n
         for n_i, color_i in colors[color]:
-            queue.append((n * n_i, color_i))
+            todo.append((n * n_i, color_i))
 
     total_bags -= 1
     return total_bags
