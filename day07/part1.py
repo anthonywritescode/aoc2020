@@ -9,10 +9,7 @@ from support import timing
 
 INPUT_TXT = os.path.join(os.path.dirname(__file__), 'input.txt')
 
-PATTERN = re.compile(
-    r'^([^ ]+ [^ ]+) bags contain '
-    r'(no other bags|((, )?(\d+) ([^ ]+ [^ ]+) bags?)*)\.$'
-)
+PATTERN = re.compile('^([^ ]+ [^ ]+) bags contain (.*)$')
 BAG_RE = re.compile(r'(\d+) ([^ ]+ [^ ]+)')
 
 
