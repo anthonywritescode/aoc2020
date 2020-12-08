@@ -1,5 +1,7 @@
 import argparse
 import os.path
+from typing import List
+from typing import Tuple
 
 import pytest
 
@@ -8,17 +10,11 @@ from support import timing
 INPUT_TXT = os.path.join(os.path.dirname(__file__), 'input.txt')
 
 
-def compute(s: str) -> int:
-    code = []
-    for line in s.splitlines():
-        opc, n_s = line.split()
-        n = int(n_s)
-        code.append((opc, n))
-
+def run(code: List[Tuple[str, int]]) -> int:
     visited = set()
     n = 0
     pc = 0
-    while pc not in visited:
+    while pc not in visited and pc < len(code):
         visited.add(pc)
         opc, value = code[pc]
         if opc == 'acc':
@@ -31,11 +27,36 @@ def compute(s: str) -> int:
         else:
             raise NotImplementedError(opc)
 
-    print(len(visited))
-    print(len(code))
-    print(sum(opc in {'jmp', 'nop'} for opc in (code[i][0] for i in visited)))
+    if pc == len(code):
+        return n
+    else:
+        raise RuntimeError('wat')
 
-    return n
+
+def compute(s: str) -> int:
+    code = []
+    for line in s.splitlines():
+        opc, n_s = line.split()
+        n = int(n_s)
+        code.append((opc, n))
+
+    for i, (opc, value) in enumerate(code):
+        if opc == 'nop':
+            code2 = code[:]
+            code2[i] = ('jmp', value)
+            try:
+                return run(code2)
+            except RuntimeError:
+                pass
+        elif opc == 'jmp':
+            code2 = code[:]
+            code2[i] = ('nop', value)
+            try:
+                return run(code2)
+            except RuntimeError:
+                pass
+
+    raise NotImplementedError('wat')
 
 
 INPUT_S = '''\
@@ -54,7 +75,7 @@ acc +6
 @pytest.mark.parametrize(
     ('input_s', 'expected'),
     (
-        (INPUT_S, 5),
+        (INPUT_S, 8),
     ),
 )
 def test(input_s: str, expected: int) -> None:
