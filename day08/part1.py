@@ -31,10 +31,6 @@ def compute(s: str) -> int:
         else:
             raise NotImplementedError(opc)
 
-    print(len(visited))
-    print(len(code))
-    print(sum(opc in {'jmp', 'nop'} for opc in (code[i][0] for i in visited)))
-
     return n
 
 
