@@ -9,7 +9,13 @@ INPUT_TXT = os.path.join(os.path.dirname(__file__), 'input.txt')
 
 
 def compute(s: str) -> int:
-    for line in s.split():
+    numbers = [int(line) for line in s.splitlines()]
+    lines = s.splitlines()
+
+    for n in numbers:
+        pass
+
+    for line in lines:
         pass
     # TODO: implement solution here!
     return 0
