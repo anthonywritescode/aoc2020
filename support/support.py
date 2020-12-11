@@ -52,4 +52,13 @@ def download_input() -> int:
     with open('input.txt', 'w') as f:
         f.write(s)
 
+    lines = s.splitlines()
+    if len(lines) > 10:
+        for line in lines[:10]:
+            print(line)
+        print('...')
+    else:
+        print(lines[0][:80])
+        print('...')
+
     return 0
