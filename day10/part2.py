@@ -24,13 +24,11 @@ def n_for_streak(n: int) -> int:
 
 def compute(s: str) -> int:
     numbers = sorted(int(line) for line in s.splitlines())
-    numbers.insert(0, 0)
 
     combs = 1
-
-    prev = numbers[0]
+    prev = 0
     streak = 1
-    for n in numbers[1:]:
+    for n in numbers:
         if n == prev + 1:
             streak += 1
         elif streak > 1:
