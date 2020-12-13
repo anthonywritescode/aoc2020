@@ -101,4 +101,6 @@ $ find -maxdepth 1 -type d -name 'day*' -not -name day00 | sort | xargs --replac
 > 105 μs (sympy)
 487905974205117
 > 276 ms (z3)
++ 487905974205117
+> 206 μs (loop)
 ```

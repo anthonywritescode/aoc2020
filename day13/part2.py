@@ -51,6 +51,25 @@ def compute_z3(s: str) -> int:
     return t
 
 
+def compute_loop(s: str) -> int:
+    lines = s.splitlines()
+    parsed = [
+        (int(s), i)
+        for i, s in enumerate(lines[1].split(','))
+        if s != 'x'
+    ]
+
+    t = 0
+    mult = parsed[0][0]
+
+    for bus, offset in parsed[1:]:
+        while (t + offset) % bus != 0:
+            t += mult
+        mult *= bus
+
+    return t
+
+
 INPUT_S = '''\
 939
 7,13,x,x,59,x,31,19
@@ -78,7 +97,7 @@ INPUT4_S = '''\
         (INPUT4_S, 779210),
     ),
 )
-@pytest.mark.parametrize('func', (compute, compute_z3))
+@pytest.mark.parametrize('func', (compute, compute_z3, compute_loop))
 def test(input_s: str, expected: int, func: Callable[[str], int]) -> None:
     assert compute(input_s) == expected
 
@@ -94,6 +113,8 @@ def main() -> int:
         print(compute(contents))
     with timing('z3'):
         print(compute_z3(contents))
+    with timing('loop'):
+        print(compute_loop(contents))
 
     return 0
 
