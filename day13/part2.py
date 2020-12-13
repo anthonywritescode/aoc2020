@@ -95,6 +95,8 @@ INPUT4_S = '''\
         (INPUT2_S, 3417),
         (INPUT3_S, 754018),
         (INPUT4_S, 779210),
+        ('...\n5,7', 20),
+        ('...\n5,7,9', 160),
     ),
 )
 @pytest.mark.parametrize('func', (compute, compute_z3, compute_loop))
