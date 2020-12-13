@@ -1,8 +1,12 @@
 import argparse
 import os.path
+from typing import Callable
 
 import pytest
 from sympy.ntheory.modular import crt
+from z3 import Int
+from z3 import sat
+from z3 import Solver
 
 from support import timing
 
@@ -16,10 +20,35 @@ def compute(s: str) -> int:
         for i, s in enumerate(lines[1].split(','))
         if s != 'x'
     ]
-    busses = [pt[0] for pt in parsed]
+    buses = [pt[0] for pt in parsed]
     mods = [-1 * pt[1] for pt in parsed]
 
-    return crt(busses, mods)[0]
+    return crt(buses, mods)[0]
+
+
+def compute_z3(s: str) -> int:
+    lines = s.splitlines()
+    parsed = [
+        (int(s), i)
+        for i, s in enumerate(lines[1].split(','))
+        if s != 'x'
+    ]
+
+    T = Int('T')
+    N = Int('N')
+
+    t = 0
+    mult = parsed[0][0]
+
+    for bus, offset in parsed[1:]:
+        solver = Solver()
+        solver.add(T > 0, (T + offset) % bus == 0)
+        solver.add(T == t + N * mult)
+        assert solver.check() == sat
+        t = solver.model()[T]
+        mult *= bus
+
+    return t
 
 
 INPUT_S = '''\
@@ -49,7 +78,8 @@ INPUT4_S = '''\
         (INPUT4_S, 779210),
     ),
 )
-def test(input_s: str, expected: int) -> None:
+@pytest.mark.parametrize('func', (compute, compute_z3))
+def test(input_s: str, expected: int, func: Callable[[str], int]) -> None:
     assert compute(input_s) == expected
 
 
@@ -58,8 +88,12 @@ def main() -> int:
     parser.add_argument('data_file', nargs='?', default=INPUT_TXT)
     args = parser.parse_args()
 
-    with open(args.data_file) as f, timing():
-        print(compute(f.read()))
+    with open(args.data_file) as f:
+        contents = f.read()
+    with timing('sympy'):
+        print(compute(contents))
+    with timing('z3'):
+        print(compute_z3(contents))
 
     return 0
 
