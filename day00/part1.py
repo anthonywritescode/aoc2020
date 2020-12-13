@@ -20,10 +20,15 @@ def compute(s: str) -> int:
     return 0
 
 
+INPUT_S = '''\
+
+'''
+
+
 @pytest.mark.parametrize(
     ('input_s', 'expected'),
     (
-        # put given test cases here
+        (INPUT_S, 1),
     ),
 )
 def test(input_s: str, expected: int) -> None:
