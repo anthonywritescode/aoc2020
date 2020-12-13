@@ -8,14 +8,6 @@ from support import timing
 INPUT_TXT = os.path.join(os.path.dirname(__file__), 'input.txt')
 
 
-DIRECTIONS = [
-    (0, 1),
-    (1, 0),
-    (0, -1),
-    (-1, 0),
-]
-
-
 def compute(s: str) -> int:
     s_y = 0
     s_x = 0
