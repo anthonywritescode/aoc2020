@@ -1,2 +1,4 @@
 -e support
 pytest
+sympy
+z3-solver
