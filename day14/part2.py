@@ -17,21 +17,29 @@ MEM_RE = re.compile(r'^mem\[(\d+)\] = (\d+)$')
 
 class Mask(NamedTuple):
     ones_mask: int
-    xs: Tuple[int, ...]
+    x_masks: Tuple[Tuple[int, int], ...]
 
     def targets(self, number: int) -> Generator[int, None, None]:
         number = number | self.ones_mask
-        number_s = list(f'{number:b}'.zfill(36))
-        for i in range(1 << len(self.xs)):
-            for j in range(len(self.xs)):
-                number_s[self.xs[j]] = str((i & (1 << j)) >> j)
-            yield int(''.join(number_s), 2)
+        for x_mask_or, x_mask_and in self.x_masks:
+            yield (number | x_mask_or) & x_mask_and
 
 
 def parse_mask(s: str) -> Mask:
     one_mask = int(s.replace('X', '0'), 2)
-    x_pos = [match.start() for match in re.finditer('X', s)]
-    return Mask(one_mask, tuple(x_pos))
+    xs = [match.start() for match in re.finditer('X', s)]
+    x_masks = []
+    for i in range(1 << len(xs)):
+        number_or = 0
+        number_and = -1
+        for j in range(len(xs)):
+            bit = (i & (1 << j)) >> j
+            if bit:
+                number_or |= 1 << (len(s) - 1 - xs[j])
+            else:
+                number_and &= ~(1 << (len(s) - 1 - xs[j]))
+        x_masks.append((number_or, number_and))
+    return Mask(one_mask, tuple(x_masks))
 
 
 def compute(s: str) -> int:
