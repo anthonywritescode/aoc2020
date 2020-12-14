@@ -25,7 +25,7 @@ class Mask(NamedTuple):
         for i in range(1 << len(self.xs)):
             for j in range(len(self.xs)):
                 number_s[self.xs[j]] = str((i & (1 << j)) >> j)
-                yield int(''.join(number_s), 2)
+            yield int(''.join(number_s), 2)
 
 
 def parse_mask(s: str) -> Mask:
