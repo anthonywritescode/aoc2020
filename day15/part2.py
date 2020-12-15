@@ -14,10 +14,9 @@ def compute(s: str) -> int:
     seen1: Dict[int, int] = {}
     numbers = [int(n) for n in s.strip().split(',')]
 
-    n = -1
-    for turn in range(1, 30_000_000 + 1):
-        if turn <= len(numbers):
-            n = numbers[turn - 1]
+    for turn in range(30_000_000):
+        if turn < len(numbers):
+            n = numbers[turn]
         elif n not in seen2:
             n = 0
         else:
@@ -38,7 +37,7 @@ INPUT_S = '''\
 @pytest.mark.parametrize(
     ('input_s', 'expected'),
     (
-        (INPUT_S, 436),
+        (INPUT_S, 175594),
     ),
 )
 def test(input_s: str, expected: int) -> None:

@@ -15,10 +15,9 @@ def compute(s: str) -> int:
     prev_seen: Dict[int, List[int]] = collections.defaultdict(list)
     numbers = [int(n) for n in s.strip().split(',')]
 
-    n = -1
-    for turn in range(1, 2020 + 1):
-        if turn <= len(numbers):
-            n = numbers[turn - 1]
+    for turn in range(2020):
+        if turn < len(numbers):
+            n = numbers[turn]
         elif len(prev_seen[n]) == 1:
             n = 0
         else:
