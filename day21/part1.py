@@ -45,10 +45,6 @@ def compute(s: str) -> int:
                     v.discard(val)
                 del by_allergen[k]
 
-    all_ingredients: Set[str] = set()
-    for recipe in recipes:
-        all_ingredients |= recipe.ingredients
-
     total = 0
     known = set(assigned.values())
     for recipe in recipes:
