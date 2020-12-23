@@ -157,4 +157,7 @@ cfzdnz,htxsjf,ttbrlvd,bbbl,lmds,cbmjz,cmbcm,dvnbh
 + python day22/part2.py day22/input.txt
 34424
 > 3996 ms
++ python3 day23/part1.py day23/input.txt
+45286397
+> 266 μs
 ```
