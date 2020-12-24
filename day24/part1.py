@@ -1,5 +1,7 @@
 import argparse
 import os.path
+from typing import Set
+from typing import Tuple
 
 import pytest
 
@@ -9,7 +11,7 @@ INPUT_TXT = os.path.join(os.path.dirname(__file__), 'input.txt')
 
 
 def compute(s: str) -> int:
-    black_tiles = set()
+    black_tiles: Set[Tuple[int, int]] = set()
 
     for line in s.strip().splitlines():
         x = y = i = 0
@@ -39,10 +41,7 @@ def compute(s: str) -> int:
             else:
                 raise AssertionError(line[i:])
 
-        if (x, y) in black_tiles:
-            black_tiles.discard((x, y))
-        else:
-            black_tiles.add((x, y))
+        black_tiles ^= {(x, y)}
 
     return len(black_tiles)
 

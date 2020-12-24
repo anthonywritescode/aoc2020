@@ -2,6 +2,7 @@ import argparse
 import collections
 import os.path
 from typing import Counter
+from typing import Set
 from typing import Tuple
 
 import pytest
@@ -22,7 +23,7 @@ DIRECTIONS = [
 
 
 def compute(s: str) -> int:
-    black_tiles = set()
+    black_tiles: Set[Tuple[int, int]] = set()
 
     for line in s.strip().splitlines():
         x = y = i = 0
@@ -52,10 +53,7 @@ def compute(s: str) -> int:
             else:
                 raise AssertionError(line[i:])
 
-        if (x, y) in black_tiles:
-            black_tiles.discard((x, y))
-        else:
-            black_tiles.add((x, y))
+        black_tiles ^= {(x, y)}
 
     for _ in range(100):
         counts: Counter[Tuple[int, int]] = collections.Counter()
