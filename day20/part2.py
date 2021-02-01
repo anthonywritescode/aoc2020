@@ -30,7 +30,7 @@ class Edges(NamedTuple):
 
 
 class Tile:
-    def __init__(self, tile_id: int, lines: Tuple[str, ...]) -> None:
+    def __init__(self, tile_id: int, lines: tuple[str, ...]) -> None:
         self.tile_id = tile_id
         self.lines = lines
 
@@ -44,11 +44,11 @@ class Tile:
         )
 
     @functools.cached_property
-    def back_edges(self) -> Tuple[str, ...]:
+    def back_edges(self) -> tuple[str, ...]:
         return tuple(edge[::-1] for edge in self.edges)
 
     @functools.cached_property
-    def inner_parts(self) -> Tuple[str, ...]:
+    def inner_parts(self) -> tuple[str, ...]:
         return tuple(line[1:-1] for line in self.lines[1:-1])
 
     def rotate(self) -> Tile:
@@ -87,7 +87,7 @@ class Tile:
         )
 
 
-def _first_corner(tiles: Dict[int, Tile]) -> Tile:
+def _first_corner(tiles: dict[int, Tile]) -> Tile:
     for i, tile in enumerate(tiles.values()):
         matched_edges = set()
         for j, other in enumerate(tiles.values()):
