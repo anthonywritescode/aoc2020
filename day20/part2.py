@@ -6,10 +6,8 @@ import functools
 import math
 import os.path
 import re
-from typing import Dict
 from typing import Generator
 from typing import NamedTuple
-from typing import Tuple
 
 import pytest
 
